@@ -1,21 +1,5 @@
-
-    $(document).ready(function () {
+$(document).ready(function () {
     var isValid; // Flag to track if the form is valid
-
-    // Function to hide messages after 1 second
-    function hideMessage(messageId) {
-        setTimeout(function () {
-            $("#" + messageId).fadeOut("slow");
-        }, 2000); // Hide after 1 second
-    }
-
-    // Hide success/error messages after 1 second
-    if ($("#successMessage").length > 0) {
-        hideMessage("successMessage");
-    }
-    if ($("#errorMessages").length > 0) {
-        hideMessage("errorMessages");
-    }
 
     // Validate Name
     $("#name").on("input", function () {
@@ -106,12 +90,9 @@
     $("form").on("submit", function (e) {
         isValid = true; // Reset validation flag
 
-    // Trigger validation for each field
-    // When the user clicks Submit, this line forces all validation functions to run on all form fields at once.
-    // If any field is invalid, it will show an error.
-    // Prevents submitting an incomplete or incorrect form.
+        // Trigger validation for each field
         $("#name, #address, #dob").trigger("input");
-        $("input[name='gender'], input[name='depart']").trigger("change");  // For radio buttons
+        $("input[name='gender'], input[name='depart']").trigger("change"); // For radio buttons
 
         // If form is invalid, prevent submission and show alert
         if (!isValid) {
@@ -119,17 +100,7 @@
             alert("Please fill in all the required fields correctly.");
         }
     });
-    });
+});
 
 
-    //  JavaScript to remove messages after 3 seconds 
-    setTimeout(function() {
-        // Handle success message
-        var successMessage = document.getElementById("successMessage");
-        if (successMessage) {
-            successMessage.style.transition = "opacity 0.5s";
-            successMessage.style.opacity = "0";
-            setTimeout(() => successMessage.remove(), 500); // Remove after fade out
-        }
-    }, 3000); //3-second delay before fading out
 

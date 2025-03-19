@@ -28,3 +28,8 @@ form{
     font-size: 24px;
     display: block;
      }
+.errormes{
+    color: red;
+    padding : 10px;
+    margin-bottom: 10px;
+}

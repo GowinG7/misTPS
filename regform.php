@@ -3,58 +3,64 @@ session_start();
 
 include("dbconnect.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
-    // Get form data
-    $name = $_POST["name"];
-    $address = $_POST["address"];
-    $gender = $_POST["gender"];
-    $dob = $_POST["dob"];
-    $department = $_POST["depart"];
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+        // Get form data
+        $name = $_POST["name"];
+        $address = $_POST["address"];
+        $gender = $_POST["gender"];
+        $dob = $_POST["dob"];
+        $department = $_POST["depart"];
 
-    // Array to hold error messages
-    $errorMessages = [];
+        // Array to hold error messages
+        $errorMessages = [];
 
-    // Validate form fields
-    if (empty($name) || empty($address) || empty($gender) || empty($dob) || empty($department)) {
-        $errorMessages[] = "Please fill all the fields.";
-    }
-
-    if (!preg_match("/^[A-Za-z ]+$/", $name)) {
-        $errorMessages[] = "Name should only contain letters and spaces.";
-    }
-
-    if (!preg_match("/^[A-Za-z0-9\s,-]+$/", $address)) {
-        $errorMessages[] = "Address should only contain letters, numbers, space, and hyphen.";
-    }
-
-    if (empty($gender)) {
-        $errorMessages[] = "Please select your gender.";
-    }
-
-    if (empty($department)) {
-        $errorMessages[] = "Please select your department.";
-    }
-
-    $dobDate = new DateTime($dob);
-    $today = new DateTime();
-    $age = $today->diff($dobDate)->y;
-    if ($age < 18) {
-        $errorMessages[] = "Age must be 18 or older.";
-    }
-
-    // If no errors, insert data
-    if (empty($errorMessages)) {
-        $qry = "INSERT INTO tbl1 (name, address, Gender, DOB, depart) VALUES ('$name', '$address', '$gender', '$dob', '$department')";
-        $result = mysqli_query($conn, $qry);
-        if ($result) {
-            $_SESSION['successMessage'] = "Registration Done"; // Store success message in session
-            header("Location: " . $_SERVER['PHP_SELF']); // Redirect to the same page to prevent resubmission
-            exit; // Make sure no further code is executed
-        } else {
-            $errorMessages[] = "Registration failed";
+        // Validate form fields
+        if (empty($name) || empty($address) || empty($gender) || empty($dob) || empty($department)) {
+            $errorMessages[] = "Please fill all the fields.";
         }
+
+        if (!preg_match("/^[A-Za-z ]+$/", $name)) {
+            $errorMessages[] = "Name should only contain letters and spaces.";
+        }
+
+        if (!preg_match("/^[A-Za-z0-9\s,-]+$/", $address)) {
+            $errorMessages[] = "Address should only contain letters, numbers, space, and hyphen.";
+        }
+
+        if (empty($gender)) {
+            $errorMessages[] = "Please select your gender.";
+        }
+
+        if (empty($department)) {
+            $errorMessages[] = "Please select your department.";
+        }
+
+        $dobDate = new DateTime($dob);
+        $today = new DateTime();
+        $age = $today->diff($dobDate)->y;
+        if ($age < 18) {
+            $errorMessages[] = "Age must be 18 or older.";
+        }
+
+
+        // Insert data if no errors
+        if(empty($errorMessages)){
+
+            $qry = "INSERT INTO tbl1 (name, address, Gender, DOB, depart) VALUES ('$name', '$address', '$gender', '$dob', '$department')";
+            $result = mysqli_query($conn, $qry);
+        
+        if ($result) {
+            $_SESSION['successMessage'] = "Registration Done"; // Success message
+        } else {
+            $_SESSION['errorMessages'] = ["Registration failed."]; // Store error in session
+        }
+        } else{
+            $_SESSION['errorMessages'] = $errorMessages; // Store error in session
+        }
+        //redirect to the same page to show messages
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
     }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,12 +73,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 </head>
 <body>
     <form action="regform.php" method="post">
-          <!-- Success Message -->
+          
           <?php
+            //display success message
              if (isset($_SESSION['successMessage'])) {
                 echo '<div class="success" id="successMessage">' . $_SESSION['successMessage'] . '</div>';
                 unset($_SESSION['successMessage']); // Clear the session variable after displaying the message
             }
+            //display error message
+          if (isset($_SESSION['errorMessages'])) {
+              echo '<div class="errormes" id="errorMessage">';
+              foreach ($_SESSION['errorMessages'] as $error) {
+                  echo '<p>' . $error . '</p>';
+              }
+              echo '</div>';
+              unset($_SESSION['errorMessages']); // Clear the session variable after displaying the message
+          }
+
         ?>
       <fieldset>
         <legend>Register Form</legend>
@@ -130,6 +147,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
       
     </form>
 
+    <script>
+        //yo chaie server side bata auuney lai handle grna uta rakhda confuse bayo
+        $(document).ready(function () {
+            // Function to hide messages after a specified timeout
+            function hideMessage(messageId, timeout) {
+                setTimeout(function () {
+                    $("#" + messageId).fadeOut("slow");
+                }, timeout); // Hide after specified time
+            }
+
+            // Hide success/error messages after 3 seconds
+            if ($("#successMessage").length > 0) {
+                hideMessage("successMessage", 3000); // 3 seconds delay for success message
+            }
+            if ($("#errorMessage").length > 0) {
+                hideMessage("errorMessage", 5000); // 5 seconds delay for error message
+            }
+        });
+    </script>
 
 <script src="formval.js"></script>
 
