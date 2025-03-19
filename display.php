@@ -98,6 +98,7 @@
                     echo "<td>" . $row["DOB"] . "</td>";
                     echo "<td>" . $row["depart"] . "</td>";
                   
+                   
                     echo "<td><a href='update.php?id=" . $row['id'] . "'>Update</a></td>";
                     echo "<td><a href='delete.php?id=" . $row['id'] . "' onclick='return confirm(\"Are you sure?\")'>Delete</a></td>";
 
