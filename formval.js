@@ -91,8 +91,12 @@ $(document).ready(function () {
         isValid = true; // Reset validation flag
 
         // Trigger validation for each field
-        $("#name, #address, #dob").trigger("input");
-        $("input[name='gender'], input[name='depart']").trigger("change"); // For radio buttons
+        $("#name, #address, #dob").each(function () {
+            $(this).trigger("input");
+        });
+        $("input[name='gender'], input[name='depart']").each(function () {
+            $(this).trigger("change");
+        })
 
         // If form is invalid, prevent submission and show alert
         if (!isValid) {

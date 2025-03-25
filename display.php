@@ -84,7 +84,7 @@
    
         <table border="1" cellpadding="10" cellspacing="0" style="margin-top:350px;margin-left:-380px;">
             <caption> <h2 style="margin-left: -250px;">Your record</h2></caption>
-            <tr> <th>ID</th><th>Name</th><th>Address</th><th>Gender</th><th>DOB</th><th>Department</th><th>Action</th></tr>
+            <tr> <th>ID</th><th>Name</th><th>Address</th><th>Gender</th><th>DOB</th><th>Department</th><th>Action</th><th>Action</th></tr>
            
            <?php
             //check if we have a valid result

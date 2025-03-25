@@ -35,9 +35,14 @@ include("dbconnect.php");
             $errorMessages[] = "Please select your department.";
         }
 
+        //create a DateTime object from the provided date of birth($dob yo user le diyeko input value)
         $dobDate = new DateTime($dob);
+        //create a DateTime object fot the current date (today's date)
         $today = new DateTime();
+        //calculate the age by subtracting the date of birth from the current date
+        // ->y retrieves the difference in years, which is the person's age
         $age = $today->diff($dobDate)->y;
+        
         if ($age < 18) {
             $errorMessages[] = "Age must be 18 or older.";
         }
@@ -121,16 +126,17 @@ include("dbconnect.php");
         <br>
 
         <label>Select Department:</label> <br>
+        
         <input type="radio" id="it" name="depart" value="IT">
         <label for="it">IT</label><br>
 
         <input type="radio" id="finance" name="depart" value="Finance">
         <label for="finance">Finance</label><br>
 
-        <input type="radio" id="inven" name="depart" value="Inventory">
+        <input type="radio" id="inven" name="depart" value="inven">
         <label for="inven">Inventory</label><br>
 
-        <input type="radio" id="prod" name="depart" value="Production">
+        <input type="radio" id="prod" name="depart" value="prod">
         <label for="prod">Production</label>
         <div><span id="depart_error" class="error"></span></div>
         <br>
