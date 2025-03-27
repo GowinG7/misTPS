@@ -56,23 +56,41 @@ mysqli_close($conn);
         <fieldset>
             <legend>Update Form</legend>
 
-            <label for="id">ID:</label>
+            <label for="id">ID:</label>&nbsp;
             <input type="text" name="id" value="<?php echo $id; ?>" readonly><br><br>
 
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required><br><br>
 
-            <label for="dob">DOB:</label>
-            <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>" required><br><br>
-
             <label for="address">Address:</label>
             <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($address); ?>" required><br><br>
 
             <label>Gender:</label>
-            <input type="text" id="gender" name="gender" value="<?php echo $gender; ?>" readonly><br><br>
+            <input type="radio" id="male" name="gender" value="M" <?php echo ($gender=='M') ? 'checked' : ''; ?> >
+            <label for="male">M</label>
+            
+            <input type="radio" id="female" name="gender" value="F" <?php echo ($gender=='F') ? 'checked' : ''; ?> >
+            <label for="female">F</label>
+            <br><br>
 
-            <label>Department:</label>
-            <input type="text" id="department" name="department" value="<?php echo $department; ?>" readonly><br><br>
+
+            <label for="dob">DOB:</label>
+            <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>" readonly><br><br>
+
+            <label>Select Department:</label> <br>
+        
+            <input type="radio" id="it" name="depart" value="IT" <?php echo ($department == 'IT') ? 'checked' : ''; ?> disabled>
+            <label for="it">IT</label><br>
+
+            <input type="radio" id="finance" name="depart" value="Finance" <?php echo ($department == 'Finance') ? 'checked' : ''; ?> disabled >
+            <label for="finance">Finance</label><br>
+
+            <input type="radio" id="inven" name="depart" value="inven" <?php echo ($department == 'inven') ? 'checked' : ''; ?> disabled >
+            <label for="inven">Inventory</label><br>
+
+            <input type="radio" id="prod" name="depart" value="prod" <?php echo ($department == 'prod') ? 'checked' : ''; ?> disabled >
+            <label for="prod">Production</label>
+            <br><br>
 
             <input type="submit" value="Update" name="submit">
             <input type="reset" value="Reset">
