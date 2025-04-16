@@ -61,7 +61,10 @@ $(document).ready(function () {
         if (age < 18) {
             showError("dob", "You must be at least 18 years old.");
             isValid = false; // Mark form as invalid
-        } else {
+        } else if (age > 99) {
+            showError("dob", "You must be less than 100 years old.");
+        }
+        else {
             hideError("dob");
         }
     });

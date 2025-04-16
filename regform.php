@@ -45,6 +45,8 @@ include("dbconnect.php");
         
         if ($age < 18) {
             $errorMessages[] = "Age must be 18 or older.";
+        }else if($age > 99){
+            $errorMessages[] = "Age must be less than 100.";
         }
 
 
