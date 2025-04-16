@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Display record</title>
     <style>
-        body{
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: whitesmoke;
         }
-        form{
+
+        form {
             background-color: white;
             border: 1px solid black;
             margin: 10px;
             padding: 20px;
             margin-bottom: 70px;
         }
-        .error-message{
+
+        .error-message {
             color: red;
         }
     </style>
@@ -85,11 +88,20 @@ if (isset($_SESSION['user_id'])) {
     </form>
 
     <table border="1" cellpadding="10" cellspacing="0" style="margin-top:350px;margin-left:-380px;">
-        <caption><h2 style="margin-left: -250px;">Your record</h2></caption>
-        <tr> 
-            <th>ID</th><th>Name</th><th>Address</th><th>Gender</th><th>DOB</th><th>Department</th><th>Action</th><th>Action</th>
+        <caption>
+            <h2 style="margin-left: -250px;">Your record</h2>
+        </caption>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>DOB</th>
+            <th>Department</th>
+            <th>Action</th>
+            <th>Action</th>
         </tr>
-        
+
         <?php
         if (isset($result) && mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -100,7 +112,7 @@ if (isset($_SESSION['user_id'])) {
                 echo "<td>" . $row["Gender"] . "</td>";
                 echo "<td>" . $row["DOB"] . "</td>";
                 echo "<td>" . $row["depart"] . "</td>";
-                echo "<td><a href='update.php'>Update</a></td>"; // No longer passing ID via URL
+                echo "<td><a href='update.php?id=" . $row['id'] . "'>Update</a></td>"; // No longer passing ID via URL
                 echo "<td><a href='delete.php?id=" . $row['id'] . "' onclick='return confirm(\"Are you sure?\")'>Delete</a></td>";
                 echo "</tr>";
             }
@@ -110,14 +122,15 @@ if (isset($_SESSION['user_id'])) {
     </table>
 
     <script>
-    setTimeout(function() {
-        var message = document.getElementById("message");
-        if (message) {
-            message.style.transition = "opacity 0.5s";
-            message.style.opacity = "0";
-            setTimeout(() => message.remove(), 500);
-        }
-    }, 3000);
+        setTimeout(function () {
+            var message = document.getElementById("message");
+            if (message) {
+                message.style.transition = "opacity 0.5s";
+                message.style.opacity = "0";
+                setTimeout(() => message.remove(), 500);
+            }
+        }, 3000);
     </script>
 </body>
+
 </html>
