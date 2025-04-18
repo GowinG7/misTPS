@@ -1,0 +1,35 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+form{
+    border: 1px solid black;
+    border-radius: 4px;
+    box-shadow: 0 0 2px gray;
+    padding: 20px;
+    margin: 10px;
+    background-color: white;
+}
+.error {
+    color: red;
+    font-size: 14px;
+    display: block;
+    margin-top: 3px;
+}
+.success {
+    color: green;
+    font-size: 24px;
+    display: block;
+     }
+.errormes{
+    color: red;
+    padding : 10px;
+    margin-bottom: 10px;
+}
