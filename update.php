@@ -34,7 +34,8 @@ if (isset($_POST["submit"])) {
 
     if (mysqli_query($conn, $update_query)) {
         echo "<script>alert('Data updated successfully'); window.location.href='display.php';</script>";
-        exit();
+        // header("Location: "."display.php");
+        // exit();
     } else {
         echo "Error updating data: " . mysqli_error($conn);
     }
@@ -45,12 +46,15 @@ mysqli_close($conn);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Record</title>
     <link rel="stylesheet" href="regform.css">
+
 </head>
+
 <body>
     <form action="" method="POST">
         <fieldset>
@@ -63,13 +67,14 @@ mysqli_close($conn);
             <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required><br><br>
 
             <label for="address">Address:</label>
-            <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($address); ?>" required><br><br>
+            <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($address); ?>"
+                required><br><br>
 
             <label>Gender:</label>
-            <input type="radio" id="male" name="gender" value="M" <?php echo ($gender=='M') ? 'checked' : ''; ?> >
+            <input type="radio" id="male" name="gender" value="M" <?php echo ($gender == 'M') ? 'checked' : ''; ?>>
             <label for="male">M</label>
-            
-            <input type="radio" id="female" name="gender" value="F" <?php echo ($gender=='F') ? 'checked' : ''; ?> >
+
+            <input type="radio" id="female" name="gender" value="F" <?php echo ($gender == 'F') ? 'checked' : ''; ?>>
             <label for="female">F</label>
             <br><br>
 
@@ -78,17 +83,18 @@ mysqli_close($conn);
             <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>" disabled><br><br>
 
             <label>Select Department:</label> <br>
-        
-            <input type="radio" id="it" name="depart" value="IT" <?php echo ($department == 'IT') ? 'checked' : ''; ?> disabled>
+
+            <input type="radio" id="it" name="depart" value="IT" <?php echo ($department == 'IT') ? 'checked' : ''; ?>
+                disabled>
             <label for="it">IT</label><br>
 
-            <input type="radio" id="finance" name="depart" value="Finance" <?php echo ($department == 'Finance') ? 'checked' : ''; ?> disabled >
+            <input type="radio" id="finance" name="depart" value="Finance" <?php echo ($department == 'Finance') ? 'checked' : ''; ?> disabled>
             <label for="finance">Finance</label><br>
 
-            <input type="radio" id="inven" name="depart" value="Inventory" <?php echo ($department == 'Inventory') ? 'checked' : ''; ?> disabled >
+            <input type="radio" id="inven" name="depart" value="Inventory" <?php echo ($department == 'Inventory') ? 'checked' : ''; ?> disabled>
             <label for="inven">Inventory</label><br>
 
-            <input type="radio" id="prod" name="depart" value="Production" <?php echo ($department == 'Production') ? 'checked' : ''; ?> disabled >
+            <input type="radio" id="prod" name="depart" value="Production" <?php echo ($department == 'Production') ? 'checked' : ''; ?> disabled>
             <label for="prod">Production</label>
             <br><br>
 
@@ -96,5 +102,47 @@ mysqli_close($conn);
             <input type="reset" value="Reset">
         </fieldset>
     </form>
+
+
+
+    <script>
+document.querySelector("form").addEventListener("submit", function (e) {
+    var name = document.getElementById("name").value.trim();
+    var address = document.getElementById("address").value.trim();
+    var gender = document.querySelector("input[name='gender']:checked");
+
+    // Validate Name
+    if (name === "") {
+        alert("Name cannot be empty.");
+        e.preventDefault();
+        return;
+    } else if (!/^[A-Za-z ]+$/.test(name)) {
+        alert("Name should contain only letters and spaces.");
+        e.preventDefault();
+        return;
+    }
+
+    // Validate Address
+    if (address === "") {
+        alert("Address cannot be empty.");
+        e.preventDefault();
+        return;
+    } else if (!/^[A-Za-z0-9\s,.-]+$/.test(address)) {
+        alert("Address should contain only letters, numbers, spaces, commas, dots, or hyphens.");
+        e.preventDefault();
+        return;
+    }
+
+    // Validate Gender
+    if (!gender) {
+        alert("Please select a gender.");
+        e.preventDefault();
+        return;
+    }
+});
+</script>
+
+
 </body>
+
 </html>

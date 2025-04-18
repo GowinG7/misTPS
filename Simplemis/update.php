@@ -97,6 +97,45 @@ mysqli_close($conn);
             <input type="reset" value="Reset">
         </fieldset>
     </form>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function (e) {
+        var name = document.getElementById("name").value.trim();
+        var address = document.getElementById("address").value.trim();
+        var gender = document.querySelector("input[name='gender']:checked");
+
+        // Validate Name
+        if (name === "") {
+            alert("Name cannot be empty.");
+            e.preventDefault();
+            return;
+        } else if (!/^[A-Za-z ]+$/.test(name)) {
+            alert("Name should contain only letters and spaces.");
+            e.preventDefault();
+            return;
+        }
+
+        // Validate Address
+        if (address === "") {
+            alert("Address cannot be empty.");
+            e.preventDefault();
+            return;
+        } else if (!/^[A-Za-z0-9\s,.-]+$/.test(address)) {
+            alert("Address should contain only letters, numbers, spaces, commas, dots, or hyphens.");
+            e.preventDefault();
+            return;
+        }
+
+        // Validate Gender
+        if (!gender) {
+            alert("Please select a gender.");
+            e.preventDefault();
+            return;
+        }
+        });
+    </script>
+
+
 </body>
 
 </html>
