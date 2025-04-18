@@ -5,24 +5,31 @@
     <title>Display record</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             background-color: whitesmoke;
-
             margin: 0;
             padding: 0;
         }
 
-        form {
-            margin-top: 20px;
-            margin-left: 490px;
+         form {
+            margin-left: 10%;
+            justify-content: center;
+            padding: 7px;
+            } 
+
+        .search-bar{
+
+            position: sticky;
+            background-color: whitesmoke;
+            
+
         }
 
         table {
             background-color: white;
             border: 1px solid black;
-
+            justify-content: center;
+            align-items: center;
+            margin-left: 10%;
         }
 
         button {
@@ -35,6 +42,11 @@
 
         input[name="search"] {
             padding: 4px;
+        }
+        /* for showing info if no record found */
+        p{
+            margin-left: 10%;
+            font-size: 20px;
         }
     </style>
 </head>
@@ -59,20 +71,20 @@
     $result = $conn->query($query);
     ?>
 
+    <div class="search-box">
+        <!-- search box for users record  -->
+        <form method="GET" action="">
+            <input type="text" name="search" placeholder="Search by Name" value="<?php echo $search; ?>">
+            <!-- Get method so url ma visible hunxa lekhya naam ani mathi sql operation -->
+            <button type="submit">Search</button>
+        </form>
+    </div>
 
     <?php
     if (isset($result) && mysqli_num_rows($result) > 0) {
         ?>
         <table border="1" cellpadding="10" cellspacing="0">
             <caption>
-
-                <!-- search box for users record  -->
-                <form method="GET" action="">
-                    <input type="text" name="search" placeholder="Search by Name" value="<?php echo $search; ?>">
-                    <!-- Get method so url ma visible hunxa lekhya naam ani mathi sql operation -->
-                    <button type="submit">Search</button>
-                </form>
-
                 <h2><u>Users Record</u></h2>
 
             </caption>
@@ -108,8 +120,9 @@
 
         <?php
     } else {
-        echo "<p>No users found</p>";
-    }
+
+         echo "<p>No users found</p>";
+     }
     mysqli_close($conn);
     ?>
 
