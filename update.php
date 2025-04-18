@@ -27,10 +27,10 @@ if ($row = mysqli_fetch_assoc($result)) {
 if (isset($_POST["submit"])) {
     $name = $_POST["name"];
     $address = $_POST["address"];
-    $dob = $_POST["dob"];
+    $gender = $_POST["gender"];
 
-    // Update only Name, DOB, and Address
-    $update_query = "UPDATE tbl1 SET name='$name', address='$address', DOB='$dob' WHERE id=$id";
+    // Update only Name, Gender, and Address
+    $update_query = "UPDATE tbl1 SET name='$name', address='$address', Gender='$gender' WHERE id=$id";
 
     if (mysqli_query($conn, $update_query)) {
         echo "<script>alert('Data updated successfully'); window.location.href='display.php';</script>";
@@ -57,7 +57,7 @@ mysqli_close($conn);
             <legend>Update Form</legend>
 
             <label for="id">ID:</label>&nbsp;
-            <input type="text" name="id" value="<?php echo $id; ?>" readonly><br><br>
+            <input type="text" name="id" value="<?php echo $id; ?>" disabled><br><br>
 
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required><br><br>
@@ -75,7 +75,7 @@ mysqli_close($conn);
 
 
             <label for="dob">DOB:</label>
-            <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>" readonly><br><br>
+            <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>" disabled><br><br>
 
             <label>Select Department:</label> <br>
         
@@ -85,10 +85,10 @@ mysqli_close($conn);
             <input type="radio" id="finance" name="depart" value="Finance" <?php echo ($department == 'Finance') ? 'checked' : ''; ?> disabled >
             <label for="finance">Finance</label><br>
 
-            <input type="radio" id="inven" name="depart" value="inven" <?php echo ($department == 'inven') ? 'checked' : ''; ?> disabled >
+            <input type="radio" id="inven" name="depart" value="Inventory" <?php echo ($department == 'Inventory') ? 'checked' : ''; ?> disabled >
             <label for="inven">Inventory</label><br>
 
-            <input type="radio" id="prod" name="depart" value="prod" <?php echo ($department == 'prod') ? 'checked' : ''; ?> disabled >
+            <input type="radio" id="prod" name="depart" value="Production" <?php echo ($department == 'Production') ? 'checked' : ''; ?> disabled >
             <label for="prod">Production</label>
             <br><br>
 

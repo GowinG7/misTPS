@@ -37,9 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search'])) {
     $name = trim($_POST['name']);
     $dob = trim($_POST['dob']);
 
-    // Escape input to prevent SQL injection
-    $name = mysqli_real_escape_string($conn, $name);
-    $dob = mysqli_real_escape_string($conn, $dob);
 
     $query = "SELECT * FROM tbl1 WHERE name = '$name' AND dob = '$dob'";
     $result = mysqli_query($conn, $query);
@@ -112,7 +109,7 @@ if (isset($_SESSION['user_id'])) {
                 echo "<td>" . $row["Gender"] . "</td>";
                 echo "<td>" . $row["DOB"] . "</td>";
                 echo "<td>" . $row["depart"] . "</td>";
-                echo "<td><a href='update.php?id=" . $row['id'] . "'>Update</a></td>"; // No longer passing ID via URL
+                echo "<td><a href='update.php?id=" . $row['id'] . "'>Update</a></td>"; 
                 echo "<td><a href='delete.php?id=" . $row['id'] . "' onclick='return confirm(\"Are you sure?\")'>Delete</a></td>";
                 echo "</tr>";
             }
