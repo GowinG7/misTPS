@@ -56,29 +56,39 @@
 
     include("dbconnect.php");
 
-    //search by entering name backend code
-    if (isset($_GET['search'])) {
-        $search = $_GET['search'];
-    } else {
-        $search = "";
-    }
+        // Search by entering name - backend code
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];   // The name 'search' here should match the input field name in the form
+        } else {
+            $search = "";   // Default to an empty string if no search is provided
+        }
 
-    if (!empty($search)) {
-        $query = "Select * from tbl1 where name like '%$search%' ";
-    } else {
-        $query = "SELECT * FROM tbl1";
-    }
-    $result = $conn->query($query);
+        // Prepare the SQL query based on the search term
+        if (!empty($search)) {
+            $query = "SELECT * FROM tbl1 WHERE name LIKE '%$search%' ";
+        } else {
+            $query = "SELECT * FROM tbl1";  // If no search term, retrieve all records
+        }
+        $result = $conn->query($query);
     ?>
 
     <div class="search-box">
-        <!-- search box for users record  -->
-        <form method="GET" action="">
-            <input type="text" name="search" placeholder="Search by Name" value="<?php echo $search; ?>">
-            <!-- Get method so url ma visible hunxa lekhya naam ani mathi sql operation -->
-            <button type="submit">Search</button>
+        <!-- Search form for user records -->
+        <form method="GET" action=""> 
+
+        <!-- The input field's name must match the PHP variable ($_GET['search']) 
+        flow : Form submission → Data in URL → PHP picks it using $_GET → Stores in $search → Echoed back into form 
+        
+        -->
+        <input type="text" name="search" placeholder="Search by Name" value="<?php echo $search; ?>">
+
+        <!-- PHP echo $search is used to retain the previously entered value in the input field after form submission. -->
+        <!-- When the form is submitted and the page reloads, the value entered by the user stays in the search box for a better user experience. -->
+
+        <button type="submit">Search</button>
         </form>
     </div>
+
 
     <?php
     if (isset($result) && mysqli_num_rows($result) > 0) {
