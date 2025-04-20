@@ -1,3 +1,8 @@
+<?php
+session_start();
+include("dbconnect.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,23 +30,26 @@
         }
     </style>
 </head>
+<body>
 
-<?php
-session_start();
-include("dbconnect.php");
+    <?php
 
-$message = "";
+    $message = "";
+    $name = "";
+    $dob = "";
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search'])) {
-    $name = trim($_POST['name']);
-    $dob = trim($_POST['dob']);
+    // Handle form submission
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search'])) {
+    $name = $_POST['name'];
+    $dob = $_POST['dob'];
 
 
     $query = "SELECT * FROM tbl1 WHERE name = '$name' AND dob = '$dob'";
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) == 0) {
+        //clear previous session so that when entered value that not match
+        unset($_SESSION['user_id']); 
         $_SESSION['message'] = "No registered user found for the entered Name and DOB";
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
@@ -49,34 +57,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['search'])) {
         $row = mysqli_fetch_assoc($result);
         $_SESSION['user_id'] = $row['id'];
     }
-}
+    }
 
-// Fetch user details if session user_id is set
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+    // Fetch user details if session user_id is set
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
 
-    $query = "SELECT * FROM tbl1 WHERE id = $user_id";
-    $result = mysqli_query($conn, $query);
-}
-?>
-
-<body>
-    <form method="POST" action="display.php">
-        <?php
-        if (isset($_SESSION['message'])) {
-            echo '<div class="error-message" id="message">' . $_SESSION['message'] . '</div>';
-            unset($_SESSION['message']); // Clear the message after displaying
+        $query = "SELECT * FROM tbl1 WHERE id = $user_id";
+        $result = mysqli_query($conn, $query);
         }
+    ?>
+
+
+    <form method="POST" action="display.php">
+
+        <?php
+            if (isset($_SESSION['message'])) {
+                echo '<div class="error-message" id="message">' . $_SESSION['message'] . '</div>';
+                unset($_SESSION['message']); // Clear the message after displaying
+            }
         ?>
+
         <div class="heading">
             <h4>Enter your data to display record</h4>
         </div>
 
         <label>Name:</label>
-        <input type="text" name="name" placeholder="Enter your name" required />
+        <input type="text" name="name" placeholder="Enter your name" required value="<?php echo $name ?>">
         <br><br>
         <label>DOB:</label>
-        <input type="date" name="dob" required>
+        <input type="date" name="dob" required value="<?php echo $dob ?>">
         <br><br>
         <button type="submit" name="search">Search</button>
         <br><br>
