@@ -1,0 +1,106 @@
+<!-- Here’s a **shorter version** of the **Program Concept and Flow** for easier inclusion:
+
+---
+
+### **Program Concept:**
+
+This program provides a **dynamic search and filter system** for displaying user records from a database. Users can search for records by name, and the results update in real-time as they type, without reloading the page. The program uses **AJAX** to send requests and fetch data without refreshing the page, making the experience seamless.
+
+### **Program Flow:**
+
+1. **Page Load:**
+   - The page loads with a search box and an empty table.
+   - The program fetches and displays all records from the `tbl1` table in the database.
+
+2. **User Input:**
+   - As the user types in the search box, the **`onkeyup`** event triggers an **AJAX** request.
+
+3. **AJAX Request:**
+   - The current value of the search box is sent to the backend (`search.php`).
+   - The backend fetches records matching the name from the database and returns the filtered results.
+
+4. **Table Update:**
+   - The page dynamically updates the table with the filtered results, without reloading.
+
+5. **No Results Handling:**
+   - If no matching records are found, the message `"No users found"` is displayed.
+
+---
+
+This provides a clear, concise explanation of what the code does and how it works. -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Display record with AJAX</title>
+    <style>
+        body {
+            background-color: whitesmoke;
+            margin: 0;
+            padding: 0;
+        }
+
+        .search-box {
+            margin-left: 10%;
+            padding: 7px;
+        }
+
+        table {
+            background-color: white;
+            border: 1px solid black;
+            margin-left: 10%;
+            border-collapse: collapse;
+        }
+
+        button, input {
+            padding: 4px;
+            margin: 10px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+
+        p {
+            margin-left: 10%;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="search-box">
+        <input type="text" id="searchbox" placeholder="Search by Name" onkeyup="liveSearch()">
+    </div>
+
+    <div id="table-data">
+        <!-- Table data will load here using AJAX -->
+    </div>
+
+    <script>
+        function liveSearch() {
+            const searchValue = document.getElementById("searchbox").value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "search.php?search=" + searchValue, true);
+
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    document.getElementById("table-data").innerHTML = this.responseText;
+                }
+            };
+
+            xhr.send();
+        }
+
+        // Load all data initially
+        window.onload = liveSearch;
+    </script>
+
+</body>
+</html>
+

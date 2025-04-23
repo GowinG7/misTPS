@@ -10,26 +10,16 @@
             padding: 0;
         }
 
-         form {
+        .search-box {
             margin-left: 10%;
-            justify-content: center;
             padding: 7px;
-            } 
-
-        .search-bar{
-
-            position: sticky;
-            background-color: whitesmoke;
-            
-
         }
 
         table {
             background-color: white;
             border: 1px solid black;
-            justify-content: center;
-            align-items: center;
             margin-left: 10%;
+            border-collapse: collapse;
         }
 
         button {
@@ -43,8 +33,12 @@
         input[name="search"] {
             padding: 4px;
         }
-        /* for showing info if no record found */
-        p{
+
+        th, td {
+            padding: 8px;
+        }
+
+        p {
             margin-left: 10%;
             font-size: 20px;
         }
@@ -53,53 +47,19 @@
 
 <body>
     <?php
-
     include("dbconnect.php");
 
-        // Search by entering name - backend code
-        if (isset($_GET['search'])) {
-            $search = $_GET['search'];   // The name 'search' here should match the input field name in the form
-        } else {
-            $search = "";   // Default to an empty string if no search is provided
-        }
-
-        // Prepare the SQL query based on the search term
-        if (!empty($search)) {
-            $query = "SELECT * FROM tbl1 WHERE name LIKE '%$search%' ";
-        } else {
-            $query = "SELECT * FROM tbl1";  // If no search term, retrieve all records
-        }
-        $result = $conn->query($query);
+    $query = "SELECT * FROM tbl1";
+    $result = $conn->query($query);
     ?>
 
     <div class="search-box">
-        <!-- Search form for user records -->
-        <form method="GET" action=""> 
-
-        <!-- The input field's name must match the PHP variable ($_GET['search']) 
-        flow : Form submission → Data in URL → PHP picks it using $_GET → Stores in $search → Echoed back into form 
-        
-        -->
-        <input type="text" name="search" placeholder="Search by Name" value="<?php echo $search; ?>">
-
-        <!-- PHP echo $search is used to retain the previously entered value in the input field after form submission. -->
-        <!-- When the form is submitted and the page reloads, the value entered by the user stays in the search box for a better user experience. -->
-
-        <button type="submit">Search</button>
-        </form>
+        <input type="text" id="searchbox" placeholder="Search by Name" onkeyup="filterTable()">
     </div>
 
-
-    <?php
-    if (isset($result) && mysqli_num_rows($result) > 0) {
-        ?>
+    <?php if ($result && mysqli_num_rows($result) > 0): ?>
         <table border="1" cellpadding="10" cellspacing="0">
-            <caption>
-                <h2><u>Users Record</u></h2>
-
-            </caption>
-
-
+            <caption><h2><u>Users Record</u></h2></caption>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -110,33 +70,63 @@
                 <th>Action</th>
                 <th>Action</th>
             </tr>
-
-            <?php
-
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row['id'] . "</td>";
-                echo "<td>" . $row["name"] . "</td>";
-                echo "<td>" . $row["address"] . "</td>";
-                echo "<td>" . $row["Gender"] . "</td>";
-                echo "<td>" . $row["DOB"] . "</td>";
-                echo "<td>" . $row["depart"] . "</td>";
-                echo "<td><a href=update.php?id=" . $row['id'] . ">Update</a></td>";
-                echo "<td><a href='delete.php?id=" . $row['id'] . "'  style='color: red;'   onclick='return confirm(\"Are you sure?\")'>Delete</a></td>";
-                echo "</tr>";
-            }
-            ?>
+            <tbody id="table-body">
+                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                    <tr>
+                        <td><?= $row['id'] ?></td>
+                        <td class="name"><?= $row['name'] ?></td>
+                        <td><?= $row['address'] ?></td>
+                        <td><?= $row['Gender'] ?></td>
+                        <td><?= $row['DOB'] ?></td>
+                        <td><?= $row['depart'] ?></td>
+                        <td><a href="update.php?id=<?= $row['id'] ?>">Update</a></td>
+                        <td><a href="delete.php?id=<?= $row['id'] ?>" style="color: red;" onclick="return confirm('Are you sure?')">Delete</a></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
         </table>
+    <?php else: ?>
+        <p>No users found</p>
+    <?php endif; ?>
 
-        <?php
-    } else {
+    <script>
+        function filterTable() {
+            const input = document.getElementById("searchbox").value.toLowerCase();
+            const rows = document.querySelectorAll("#table-body tr");
 
-         echo "<p>No users found</p>";
-     }
-    mysqli_close($conn);
-    ?>
-
-
+            rows.forEach(row => {
+                const nameCell = row.querySelector(".name").textContent.toLowerCase();
+                row.style.display = nameCell.includes(input) ? "" : "none";
+            });
+        }
+    </script>
 </body>
 
 </html>
+
+
+
+    <!-- ❌ Not ideal for:
+    -  1,000+ records or more.
+    -  Public systems where data grows frequently.
+    -  Phones or older devices with slow JS processing.
+    
+    Program Title: Real-time Record Filter using PHP and JavaScript
+
+    Concept:
+    This program displays all user records from the database and allows real-time filtering 
+    by name as the user types into the search box. It does not use AJAX or page reloads.
+
+    Flow of the Program:
+    1. PHP connects to the MySQL database and fetches all data from `tbl1` table.
+    2. The data is displayed in an HTML table using PHP.
+    3. A search input box is provided above the table.
+    4. JavaScript handles the `onkeyup` event on the input field.
+       - It captures the user input.
+       - It filters the visible table rows by matching the name column text with the input.
+    5. Matching rows remain visible; non-matching rows are hidden.
+    
+    Note:
+    This solution is efficient for small to moderate datasets where all data can be loaded
+    initially. For large datasets, use AJAX + backend search for better performance. -->
+
