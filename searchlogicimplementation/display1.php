@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-    <title>Display record</title>
+    <title>Display record with search button triggering</title>
     <style>
         body {
             background-color: whitesmoke;
@@ -56,7 +56,7 @@
 <body>
     <?php
 
-    include("dbconnect.php");
+    include("../Simplemis/dbconnect.php");
 
         // Search by entering name - backend code
         if (isset($_GET['search'])) {
